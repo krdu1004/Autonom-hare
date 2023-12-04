@@ -55,18 +55,18 @@ def auto_canny(image, sigma=0.33):
 
 
 
-
+# Parameters to change:
 videofolder = "bilder/video_short"
-
-
-# Angle control - _ID not working
+set_width = 640
+cut_top = 1/4   # 0 for no trimming, max is 1.
+# PIDs:
 angle_setpoint = -90  # The desired angle you want to maintain
 angle_pid = PIDController(kp=0.5, ki=0.1, kd=0.2, setpoint=angle_setpoint)
-
-# Position control - _ID not working
-position_setpoint = 320  # The desired position you want to reach
+position_setpoint = set_width/2  # The desired position you want to reach
 position_pid = PIDController(kp=0.1, ki=0.01, kd=0.02, setpoint=position_setpoint)
 
+
+# Timing arrays:
 angle_history = []
 position_history = []
 tid_robust = []
@@ -76,6 +76,7 @@ tid_linregres = []
 tid_manual = []
 tid_median = []
 tid_nn_alternativ = []
+
 for filename in sorted(os.listdir(videofolder)):
     print(filename)
     image = cv2.imread(videofolder+"/"+filename)
@@ -88,8 +89,8 @@ for filename in sorted(os.listdir(videofolder)):
     # print("Height: ", height, "Width: ", width)
 
     # Crop ROI and resize to 640px widt:
-    image = image[height*1//4:, :]
-    image = cv2.resize(image, (640, int(height/width*640)), interpolation = cv2.INTER_AREA)
+    image = image[int(height*cut_top):, :]
+    image = cv2.resize(image, (set_width, int(height/width*set_width)), interpolation = cv2.INTER_AREA)
 
     copy_image = image.copy()
     starttid = time.time()
@@ -166,17 +167,16 @@ for filename in sorted(os.listdir(videofolder)):
         return a, b
 
 
-    # Generate example data (line segments defined by starting and ending points)
-    print(tid_median)
-    # Initial guesses for the line parameters
-
     line_left = np.array(line_left)
     line_right = np.array(line_right)    
 
+    # Line segments defined with star(x1, y1) and end(x2, y2)
     x1=line_left[:,0]
     y1=line_left[:,1]
     x2=line_right[:,0]
     y2=line_right[:,1]
+
+
 
     # Choose line fitting method:
     # -------------------------------------------
