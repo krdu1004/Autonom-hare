@@ -1,6 +1,4 @@
-# Autonom-hare
-Autonom hare
-
+# Autonom Pacemaker
 
 - Change the variable *videofolder* in main.py to the folder containing the images you want to detect lines on. 
 - The ouput is an in image called image that contains left and right lane lane, as well as a center line for the current lane
@@ -13,7 +11,7 @@ Both of these references can be set by changing *angle_setpoint* and *position_e
 - main_with_prints_and_plot.py contains lots of other plots, print statements for making results and debugging. 
 
 
-Pipeline is:
+Pipeline:
 1. Load, crop en rashape image
 2. Convert to grayscale
 3. Canny edge detection
