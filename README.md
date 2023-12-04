@@ -1,4 +1,4 @@
-# Autonom Pacemaker
+# Autonomous Pacemaker
 
 - Change the variable *videofolder* in main.py to the folder containing the images you want to detect lines on. 
 - The ouput is an in image called image that contains left and right lane lane, as well as a center line for the current lane
